@@ -926,7 +926,7 @@ namespace winrt::TerminalApp::implementation
         // Initialize the new tab
 
         // Create a Conhost connection based on the values in our settings object.
-        TerminalConnection::ITerminalConnection connection = TerminalConnection::ConhostConnection(settings.Commandline(), settings.StartingDirectory(), 30, 80, winrt::guid());
+        TerminalConnection::ITerminalConnection connection = TerminalConnection::ConhostConnection(settings.Commandline(), settings.StartingDirectory(), 30, 80, winrt::guid(), profileGuid);
 
         TermControl term{ settings, connection };
 
@@ -1286,7 +1286,7 @@ namespace winrt::TerminalApp::implementation
         const auto controlSettings = _settings->MakeSettings(realGuid);
 
         // Create a Conhost connection based on the values in our settings object.
-        TerminalConnection::ITerminalConnection controlConnection = TerminalConnection::ConhostConnection(controlSettings.Commandline(), controlSettings.StartingDirectory(), 30, 80, winrt::guid());
+        TerminalConnection::ITerminalConnection controlConnection = TerminalConnection::ConhostConnection(controlSettings.Commandline(), controlSettings.StartingDirectory(), 30, 80, winrt::guid(), realGuid);
 
         TermControl newControl{ controlSettings, controlConnection };
 

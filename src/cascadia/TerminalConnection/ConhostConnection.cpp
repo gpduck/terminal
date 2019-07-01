@@ -24,12 +24,14 @@ namespace winrt::Microsoft::Terminal::TerminalConnection::implementation
                                          const hstring& startingDirectory,
                                          const uint32_t initialRows,
                                          const uint32_t initialCols,
-                                         const guid& initialGuid) :
+                                         const guid& initialGuid,
+                                         const guid& profileGuid) :
         _initialRows{ initialRows },
         _initialCols{ initialCols },
         _commandline{ commandline },
         _startingDirectory{ startingDirectory },
-        _guid{ initialGuid }
+        _guid{ initialGuid },
+        _profileGuid{ profileGuid }
     {
         if (_guid == guid{})
         {
@@ -81,6 +83,17 @@ namespace winrt::Microsoft::Terminal::TerminalConnection::implementation
 
             // Ensure every connection has the unique identifier in the environment.
             extraEnvVars.emplace(L"WT_SESSION", pwszGuid);
+
+            if (_profileGuid != guid{})
+            {
+                // Convert profile Guid to string and ignore the enclosing '{}'.
+                std::wstring wsProfileGuid{ Utils::GuidToString(_profileGuid) };
+                wsProfileGuid.pop_back();
+
+                const wchar_t* const pwszProfileGuid{ wsProfileGuid.data() + 1 };
+
+                extraEnvVars.emplace(L"WT_PROFILE_ID", pwszProfileGuid);
+            }
         }
 
         THROW_IF_FAILED(

@@ -9,7 +9,7 @@ namespace winrt::Microsoft::Terminal::TerminalConnection::implementation
 {
     struct ConhostConnection : ConhostConnectionT<ConhostConnection>
     {
-        ConhostConnection(const hstring& cmdline, const hstring& startingDirectory, const uint32_t rows, const uint32_t cols, const guid& guid);
+        ConhostConnection(const hstring& cmdline, const hstring& startingDirectory, const uint32_t rows, const uint32_t cols, const guid& guid, const winrt::guid& profileGuid);
 
         winrt::event_token TerminalOutput(TerminalConnection::TerminalOutputEventArgs const& handler);
         void TerminalOutput(winrt::event_token const& token) noexcept;
@@ -31,6 +31,7 @@ namespace winrt::Microsoft::Terminal::TerminalConnection::implementation
         hstring _commandline;
         hstring _startingDirectory;
         guid _guid{}; // A unique session identifier for connected client
+        guid _profileGuid{};
 
         bool _connected{};
         std::atomic<bool> _closing{ false };
